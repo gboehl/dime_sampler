@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import emcee
 import numpy as np
 from .moves import DIMEMove
 from scipy.stats import multivariate_normal, norm
@@ -36,31 +37,6 @@ def _marginal_pdf_test_func(x, cov_scale, m, weight):
     return weight[0]*normal.pdf(x+m) + weight[1]*normal.pdf(x) + (1-weight[0]-weight[1])*normal.pdf(x-m)
 
 
-def test_verbose(seed=1234):
-
-    np.random.seed(seed)
-
-    # define distribution
-    m = 2
-    cov_scale = 0.05
-    weight = (0.33, 0.1)
-    ndim = 35
-
-    log_prob = _create_test_func(ndim, weight, m, cov_scale)
-
-    nchain = ndim*5
-    niter = 300
-
-    initmean = np.zeros(ndim)
-    initcov = np.eye(ndim)*np.sqrt(2)
-    initchain = multivariate_normal(
-        mean=initmean, cov=initcov, seed=seed).rvs(nchain)
-
-    moves = DIMEMove(aimh_prob=.1, df_proposal_dist=10)
-    # test if printing works
-    _ = run_mcmc(log_prob, 2, p0=initchain, moves=moves, verbose=True)
-    assert True
-
 
 def test_example(create=False, seed=1234):
 
@@ -82,10 +58,11 @@ def test_example(create=False, seed=1234):
     initchain = multivariate_normal(
         mean=initmean, cov=initcov, seed=seed).rvs(nchain)
 
-    moves = DIMEMove(aimh_prob=.1, df_proposal_dist=10)
+    move = DIMEMove(aimh_prob=.1, df_proposal_dist=10)
     # test silently
-    sampler = run_mcmc(log_prob, niter, p0=initchain,
-                       moves=moves, verbose=create)
+    sampler = emcee.EnsembleSampler(nchain, ndim, log_prob, moves=move)
+    sampler.run_mcmc(initchain, int(niter), progress=True)
+
     chain = sampler.get_chain()
 
     path = os.path.join(filepath, "test_storage", "median.npy")

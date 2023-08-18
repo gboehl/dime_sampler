@@ -70,7 +70,7 @@ Lets look at an example. Let's define a nice and challenging distribution (it's 
     import numpy as np
     import scipy.stats as ss
     from dime-sampler import DIMEMove
-    from dime-sampler.test import _create_test_func, _marginal_pdf_test_func
+    from dime-sampler.test_all import _create_test_func, _marginal_pdf_test_func
 
     # make it reproducible
     np.random.seed(0)

@@ -4,6 +4,15 @@ dime_sampler
 .. image:: https://github.com/gboehl/DIMESampler.jl/workflows/Testing/badge.svg
     :target: https://github.com/gboehl/DIMESampler.jl/actions
 
+.. image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime-move-blue.svg?style=flat
+    :target: https://github.com/gboehl/dime-move
+.. image:: https://github.com/gboehl/dime-move/actions/workflows/continuous-integration.yml/badge.svg
+    :target: https://github.com/gboehl/dime-move/actions
+.. image:: https://readthedocs.org/projects/dime-move/badge/?version=latest
+    :target: http://dime-move.readthedocs.io/en/latest/?badge=latest
+.. image:: https://badge.fury.io/py/dime-move.svg
+    :target: https://badge.fury.io/py/dime-move
+
 **Differential-Independence Mixture Ensemble ("DIME") MCMC sampling for Python** 
 
 This is a standalone Python implementation of the DIME sampler proposed in `Ensemble MCMC Sampling for Robust Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_ *(Gregor Boehl, 2022, SSRN No. 4250395)*.

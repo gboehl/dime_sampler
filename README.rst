@@ -21,7 +21,7 @@ The sampler has a series of advantages over conventional samplers:
   
   Figure: A trimodal example distribution in 35 dimensions
 
-There exists complementary stand-alone implementations in `Julia language <https://github.com/gboehl/DIMESampler.jl>`_ and `in matlab <https://github.com/gboehl/dime-mcmc-matlab>`_.
+There exist complementary stand-alone implementations in `Julia language <https://github.com/gboehl/DIMESampler.jl>`_ and `in matlab <https://github.com/gboehl/dime-mcmc-matlab>`_.
 
 Installation
 ------------
@@ -57,7 +57,7 @@ The package provides a direct drop-in replacement for `emcee <https://github.com
     ...
     # off you go sampling
 
-The rest of the usage is analoge to Emcee, see `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime_sampler.readthedocs.io/en/latest/modules.html#module-emcwrap.moves>`_.
+The rest of the usage is analoge to Emcee, see `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
 
 
 Tutorial

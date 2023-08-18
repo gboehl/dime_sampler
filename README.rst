@@ -1,15 +1,13 @@
 dime_sampler
 ============
 
-.. image:: https://github.com/gboehl/DIMESampler.jl/workflows/Testing/badge.svg
-    :target: https://github.com/gboehl/DIMESampler.jl/actions
-
 .. image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime-move-blue.svg?style=flat
     :target: https://github.com/gboehl/dime-move
-.. image:: https://github.com/gboehl/dime-move/actions/workflows/continuous-integration.yml/badge.svg
-    :target: https://github.com/gboehl/dime-move/actions
-.. image:: https://readthedocs.org/projects/dime-move/badge/?version=latest
-    :target: http://dime-move.readthedocs.io/en/latest/?badge=latest
+.. image:: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml/badge.svg
+    :target: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml
+.. image:: https://readthedocs.org/projects/dime-sampler/badge/?version=latest
+    :target: https://dime-sampler.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 .. image:: https://badge.fury.io/py/dime-move.svg
     :target: https://badge.fury.io/py/dime-move
 

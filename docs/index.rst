@@ -4,6 +4,4 @@
    :maxdepth: 2
 
    readme
-   tutorial
    modules
-   indices

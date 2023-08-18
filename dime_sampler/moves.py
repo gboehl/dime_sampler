@@ -155,7 +155,7 @@ class DIMEMove(RedBlueMove):
 class IMHMove(RedBlueMove):
     r"""A proposal using independence MCMC.
 
-    This is a standard independence MCMC move.
+    This is a standard independence MCMC move using a multivariate Student distribution.
 
     Parameters
     ----------

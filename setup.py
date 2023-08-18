@@ -3,7 +3,7 @@ from os import path
 
 # get version from dedicated version file
 version = {}
-with open("dime-sampler/__version__.py") as fp:
+with open("dime_sampler/__version__.py") as fp:
     exec(fp.read(), version)
 
 # read the contents of the README file
@@ -14,8 +14,8 @@ with open(path.join(this_directory, "README.rst"), encoding="utf-8") as f:
 setup(
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/gboehl/dime-sampler",
-    name="dime-sampler",
+    url="https://github.com/gboehl/dime_sampler",
+    name="dime_sampler",
     version=version['__version__'],
     author="Gregor Boehl",
     author_email="admin@gregorboehl.com",

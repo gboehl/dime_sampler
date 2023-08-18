@@ -12,12 +12,16 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+# autopep8: off
+sys.path.insert(0, os.path.abspath(".."))
+# must be called AFTER the above:
+from dime_sampler import __version__
+# autopep8: on
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'dime-sampler'
+project = 'dime_sampler'
 copyright = '2023, Gregor Boehl'
 author = 'Gregor Boehl'
 
@@ -52,20 +56,15 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-autodoc_mock_imports = ['tqdm', 'emcee', 'numpy',
-                        'scipy', 'pandas', 'matplotlib', 'numdifftools']
-
-
-def setup(app):
-    app.add_stylesheet('css/custom.css')
+autodoc_mock_imports = ['emcee', 'numpy', 'scipy', 'matplotlib']
 
 
 master_doc = 'index'
 
 html_theme_options = {
-    "description": "Tools for Bayesian inference using Enseble MCMC",
+    "description": "DIME MCMC sampling for Python",
     "github_button": True,
-    "github_repo": "dime-sampler",
+    "github_repo": "dime_sampler",
     "github_user": "gboehl",
     "sidebar_collapse": False,
 }

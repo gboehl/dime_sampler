@@ -1,4 +1,4 @@
-dime-sampler
+dime_sampler
 ============
 
 .. image:: https://github.com/gboehl/DIMESampler.jl/workflows/Testing/badge.svg
@@ -24,11 +24,11 @@ The sampler has a series of advantages over conventional samplers:
 Installation
 ------------
 
-Installing the `repository version <https://pypi.org/project/dime-sampler/>`_ from PyPi is as simple as typing
+Installing the `repository version <https://pypi.org/project/dime_sampler/>`_ from PyPi is as simple as typing
 
 .. code-block:: bash
 
-   pip install dime-sampler
+   pip install dime_sampler
 
 in your terminal or Anaconda Prompt. There exists complementary stand-alone implementations in `Julia language <https://github.com/gboehl/DIMESampler.jl>`_ and `in matlab <https://github.com/gboehl/dime-mcmc-matlab>`_.
 
@@ -41,7 +41,7 @@ The proposal can be used directly as a drop-in replacement for `emcee <https://g
 .. code-block:: python
 
     import emcee
-    from dime-sampler import DIMEMove
+    from dime_sampler import DIMEMove
 
     move = DIMEMove()
 
@@ -55,7 +55,7 @@ The proposal can be used directly as a drop-in replacement for `emcee <https://g
     ...
     # off you go sampling
 
-The rest of the usage is hence analoge to Emcee, see e.g. `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#module-emcwrap.moves>`_.
+The rest of the usage is hence analoge to Emcee, see e.g. `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime_sampler.readthedocs.io/en/latest/modules.html#module-emcwrap.moves>`_.
 
 
 Tutorial
@@ -69,8 +69,8 @@ Lets look at an example. Let's define a nice and challenging distribution (it's 
     import emcee
     import numpy as np
     import scipy.stats as ss
-    from dime-sampler import DIMEMove
-    from dime-sampler.test_all import _create_test_func, _marginal_pdf_test_func
+    from dime_sampler import DIMEMove
+    from dime_sampler.test_all import _create_test_func, _marginal_pdf_test_func
 
     # make it reproducible
     np.random.seed(0)
@@ -139,7 +139,7 @@ To ensure proper mixing, let us also have a look at the MCMC traces, again focus
     fig, ax = plt.subplots(figsize=(9,6))
     ax.plot(chain[:, :, 0], alpha=0.05, c="C0")
 
-.. image:: https://github.com/gboehl/dime-sampler/blob/main/docs/traces.png?raw=true
+.. image:: https://github.com/gboehl/dime_sampler/blob/main/docs/traces.png?raw=true
   :width: 800
   :alt: MCMC traces
 
@@ -153,7 +153,7 @@ While DIME is an MCMC sampler, it can straightforwardly be used as a global opti
     ax.plot(lprob, alpha=0.05, c="C0")
     ax.plot(np.arange(niter), np.max(lprob) * np.ones(niter), "--", c="C1")
 
-.. image:: https://github.com/gboehl/dime-sampler/blob/main/docs/lprobs.png?raw=true
+.. image:: https://github.com/gboehl/dime_sampler/blob/main/docs/lprobs.png?raw=true
   :width: 800
   :alt: Log-likelihoods
 

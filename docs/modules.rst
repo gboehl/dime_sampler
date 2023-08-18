@@ -1,6 +1,6 @@
 Module Documentation
 ====================
 
-.. autoclass:: dime-sampler.moves.DIMEMove
+.. autoclass:: dime_sampler.moves.DIMEMove
 
-.. autoclass:: dime-sampler.moves.IMHMove
+.. autoclass:: dime_sampler.moves.IMHMove

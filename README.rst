@@ -1,8 +1,8 @@
 dime_sampler
 ============
 
-.. image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime-move-blue.svg?style=flat
-    :target: https://github.com/gboehl/dime-move
+.. image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime__sampler-blue.svg?style=flat
+    :target: https://github.com/gboehl/dime_sampler
 .. image:: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml/badge.svg
     :target: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml
 .. image:: https://readthedocs.org/projects/dime-sampler/badge/?version=latest

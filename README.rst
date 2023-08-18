@@ -111,7 +111,7 @@ Now let the sampler run for 5000 iterations.
     sampler = emcee.EnsembleSampler(nchain, ndim, log_prob, moves=move)
     sampler.run_mcmc(initchain, int(niter), progress=True)
 
-The setting of ``aimh_prob`` is the actual default value. For less complex distributions (e.g. distributions closer to Gaussian) a higher value can be chosen, which accelerates burn-in. 
+The setting of ``aimh_prob`` is the actual default value. For less complex distributions (e.g. distributions closer to Gaussian) a higher value can be chosen, which accelerates burn-in. The value ``df_proposal_dist`` sets the degrees of freedom for the proposal distribution of the independence move. ``10`` is a sane default and it is rather unlikely that this value must be changed.
 
 The following code creates the figure above, which is a plot of the marginal distribution along the first dimension (remember that this actually is a 35-dimensional distribution).
 

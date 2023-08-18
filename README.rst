@@ -137,7 +137,7 @@ The following code creates the figure above, which is a plot of the marginal dis
     xlim = ax.get_xlim()
     x = np.linspace(xlim[0], xlim[1], 100)
     ax.plot(x, ss.norm(scale=np.sqrt(initvar)).pdf(x), "--", label="Initialization")
-    ax.plot(x, ss.t(df=10, loc=moves.prop_mean[0], scale=moves.prop_cov[0, 0] ** 0.5).pdf(x), ":", label="Final proposals")
+    ax.plot(x, ss.t(df=10, loc=move.prop_mean[0], scale=move.prop_cov[0, 0] ** 0.5).pdf(x), ":", label="Final proposals")
     ax.plot(x, _marginal_pdf_test_func(x, cov_scale, m, weight), label="Target")
     ax.legend()
 

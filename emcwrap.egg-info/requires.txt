@@ -1,6 +1,0 @@
-numpy
-scipy
-tqdm
-emcee
-pandas
-matplotlib

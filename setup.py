@@ -14,7 +14,7 @@ with open(path.join(this_directory, "README.rst"), encoding="utf-8") as f:
 setup(
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/gboehl/dime",
+    url="https://github.com/gboehl/dime-sampler",
     name="dime-sampler",
     version=version['__version__'],
     author="Gregor Boehl",

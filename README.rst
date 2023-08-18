@@ -1,9 +1,12 @@
 dime-sampler
 ============
 
-**Collection of tools for Bayesian inference using DIME MCMC sampling**
+.. image:: https://github.com/gboehl/DIMESampler.jl/workflows/Testing/badge.svg
+    :target: https://github.com/gboehl/DIMESampler.jl/actions
 
-This provides the Differential-Independence Mixture Ensemble (DIME) MCMC sampler together with a nice set of statistical tools for Bayesian analysis. DIME MCMC is developed in `An Ensemble MCMC Sampler for Robust Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_. *(Gregor Boehl, 2022, SSRN No. 4250395)*.
+**Differential-Independence Mixture Ensemble ("DIME") MCMC sampling for Python** 
+
+This is a standalone Python implementation of the DIME sampler proposed in `Ensemble MCMC Sampling for Robust Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_ *(Gregor Boehl, 2022, SSRN No. 4250395)*.
 
 The sampler has a series of advantages over conventional samplers:
 
@@ -21,7 +24,7 @@ The sampler has a series of advantages over conventional samplers:
 Installation
 ------------
 
-Installing the `repository version <https://pypi.org/project/econpizza/>`_ from PyPi is as simple as typing
+Installing the `repository version <https://pypi.org/project/dime-sampler/>`_ from PyPi is as simple as typing
 
 .. code-block:: bash
 
@@ -54,8 +57,6 @@ The proposal can be used directly as a drop-in replacement for `emcee <https://g
 
 The rest of the usage is hence analoge to Emcee, see e.g. `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#module-emcwrap.moves>`_.
 
-The provided tools for Bayesian analysis are ready-to-use, but largely undocumented. Find the module documentation here: https://dime-sampler.readthedocs.io/en/latest/modules.html.
-
 
 Tutorial
 --------
@@ -65,10 +66,11 @@ Lets look at an example. Let's define a nice and challenging distribution (it's 
 .. code-block:: python
 
     # some import
-    import emcwrap as ew
+    import emcee
     import numpy as np
     import scipy.stats as ss
-    from emcwrap.test_all import _create_test_func, _marginal_pdf_test_func
+    from dime-sampler import DIMEMove
+    from dime-sampler.test import _create_test_func, _marginal_pdf_test_func
 
     # make it reproducible
     np.random.seed(0)
@@ -103,51 +105,39 @@ Now let the sampler run for 5000 iterations.
 
 .. code-block:: python
 
-    # use the DIME proposal
-    moves = ew.DIMEMove(aimh_prob=0.1, df_proposal_dist=10)
-    sampler = ew.run_mcmc(log_prob, niter, p0=initchain, moves=moves)
-
-.. code-block::
-
-    [ll/MAF: 11.598(4e+00)/23%]: 100%|████████████████████ 5000/5000 [00:18<00:00, 164.70sample(s)/s]
-
-The setting of ``aimh_prob`` is the actual default value. For less complex distributions (e.g. distributions closer to Gaussian) a higher value can be chosen, which accelerates burn-in. The information in the progress bar has the structure ``[ll/MAF: <maximum log-prob>(<standard deviation of log-prob>)/<mean acceptance fraction>]...``.
-
-Note that if you wish to use emcee directly instead of the wrapper, you could simply do the following, which will give you the same result:
-
-.. code-block:: python
-
-    import emcee
-    sampler = emcee.EnsembleSampler(nchain, ndim, log_prob, moves=moves)
+    move = DIMEMove(aimh_prob=0.1, df_proposal_dist=10)
+    sampler = emcee.EnsembleSampler(nchain, ndim, log_prob, moves=move)
     sampler.run_mcmc(initchain, int(niter), progress=True)
 
+The setting of ``aimh_prob`` is the actual default value. For less complex distributions (e.g. distributions closer to Gaussian) a higher value can be chosen, which accelerates burn-in. 
 
-The following code creates the figure above, which is a plot of the marginal distribution along the first dimension (remember that this actually is a 35-dimensional distribution). For plotting, this tutorial assumes ``grgrlib`` to be installed (just run ``pip install grgrlib`` in terminal/prompt).
+The following code creates the figure above, which is a plot of the marginal distribution along the first dimension (remember that this actually is a 35-dimensional distribution).
 
 .. code-block:: python
 
-    from grgrlib import figurator
+    # import matplotlib
+    import matplotlib.pyplot as plt
 
     # get elements
     chain = sampler.get_chain()
     lprob = sampler.get_log_prob()
 
     # plotting
-    figs, axs = figurator(1, 1, 1, figsize=(9,6))
-    axs[0].hist(chain[-niter//2 :, :, 0].flatten(), bins=50, density=True, alpha=0.2, label="Sample")
-    xlim = axs[0].get_xlim()
+    fig, ax = plt.subplots(figsize=(9,6))
+    ax.hist(chain[-niter//2 :, :, 0].flatten(), bins=50, density=True, alpha=0.2, label="Sample")
+    xlim = ax.get_xlim()
     x = np.linspace(xlim[0], xlim[1], 100)
-    axs[0].plot(x, ss.norm(scale=np.sqrt(initvar)).pdf(x), "--", label="Initialization")
-    axs[0].plot(x, ss.t(df=10, loc=moves.prop_mean[0], scale=moves.prop_cov[0, 0] ** 0.5).pdf(x), ":", label="Final proposals")
-    axs[0].plot(x, _marginal_pdf_test_func(x, cov_scale, m, weight), label="Target")
-    axs[0].legend()
+    ax.plot(x, ss.norm(scale=np.sqrt(initvar)).pdf(x), "--", label="Initialization")
+    ax.plot(x, ss.t(df=10, loc=moves.prop_mean[0], scale=moves.prop_cov[0, 0] ** 0.5).pdf(x), ":", label="Final proposals")
+    ax.plot(x, _marginal_pdf_test_func(x, cov_scale, m, weight), label="Target")
+    ax.legend()
 
 To ensure proper mixing, let us also have a look at the MCMC traces, again focussing on the first dimension.
 
 .. code-block:: python
 
-    figs, axs = figurator(1, 1, 1)
-    axs[0].plot(chain[:, :, 0], alpha=0.05, c="C0")
+    fig, ax = plt.subplots(figsize=(9,6))
+    ax.plot(chain[:, :, 0], alpha=0.05, c="C0")
 
 .. image:: https://github.com/gboehl/dime-sampler/blob/main/docs/traces.png?raw=true
   :width: 800
@@ -159,9 +149,9 @@ While DIME is an MCMC sampler, it can straightforwardly be used as a global opti
 
 .. code-block:: python
 
-    figs, axs = figurator(1, 1, 1)
-    axs[0].plot(lprob, alpha=0.05, c="C0")
-    axs[0].plot(np.arange(niter), np.max(lprob) * np.ones(niter), "--", c="C1")
+    fig, ax = plt.subplots(figsize=(9,6))
+    ax.plot(lprob, alpha=0.05, c="C0")
+    ax.plot(np.arange(niter), np.max(lprob) * np.ones(niter), "--", c="C1")
 
 .. image:: https://github.com/gboehl/dime-sampler/blob/main/docs/lprobs.png?raw=true
   :width: 800

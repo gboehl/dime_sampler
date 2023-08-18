@@ -64,7 +64,7 @@ The package provides a direct drop-in replacement for `emcee <https://github.com
     ...
     # off you go sampling
 
-The rest of the usage is analoge to emcee, see `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
+The rest of the usage is analog to emcee, see `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
 
 
 Tutorial

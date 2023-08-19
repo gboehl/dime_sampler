@@ -13,7 +13,7 @@ dime_sampler
 
 **Differential-Independence Mixture Ensemble ("DIME") MCMC sampling for Python** 
 
-This is a standalone Python implementation of the DIME sampler proposed in `Ensemble MCMC Sampling for Robust Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_ *(Gregor Boehl, 2022, SSRN No. 4250395)*.
+This is the Python implementation of the DIME sampler proposed in `Ensemble MCMC Sampling for Robust Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_ *(Gregor Boehl, 2022, SSRN No. 4250395)*. It provides the ``DIMEMove`` as a drop-in replacement for the great `emcee <https://github.com/dfm/emcee>`_ MCMC package.
 
 The sampler has a series of advantages over conventional samplers:
 
@@ -64,7 +64,7 @@ The package provides a direct drop-in replacement for `emcee <https://github.com
     ...
     # off you go sampling
 
-The rest of the usage is analog to emcee, see `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
+The rest of the usage is analog to emcee. See below for getting a quickstart or have a look `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_ for details. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
 
 
 Tutorial

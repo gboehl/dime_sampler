@@ -52,7 +52,7 @@ class DIMEMove(RedBlueMove):
         self.aimh_prob = aimh_prob
         self.dft = df_proposal_dist
 
-        kwargs["nsplits"] = 1
+        # kwargs["nsplits"] = 1
         super(DIMEMove, self).__init__(**kwargs)
 
     def setup(self, coords):
@@ -109,11 +109,16 @@ class DIMEMove(RedBlueMove):
         )
         self.cumlweight = newcumlweight
 
-    def get_proposal(self, x, dummy, random):
+    def get_proposal(self, x, xref, random):
         """Actual proposal function
         """
 
+        # print(x.shape)
+        # print(np.array(xref[0]).shape)
+        # xfull = np.hstack((x,xref))
+        xref = xref[0]
         nchain, npar = x.shape
+        nref, _ = xref.shape
 
         # update AIMH proposal distribution
         self.update_proposal_dist(x)
@@ -124,7 +129,7 @@ class DIMEMove(RedBlueMove):
         i1 += i1 >= i0
         # add small noise and calculate proposal
         f = self.sigma * random.randn(nchain)
-        q = x + self.g0 * (x[i0 % nchain] - x[i1 % nchain]) + f[:, None]
+        q = x + self.g0 * (xref[i0 % nref] - xref[i1 % nref]) + f[:, None]
         factors = np.zeros(nchain, dtype=np.float64)
 
         # draw chains for AIMH sampling

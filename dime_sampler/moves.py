@@ -44,15 +44,15 @@ class DIMEMove(RedBlueMove):
     """
 
     def __init__(
-        self, sigma=1.0e-5, gamma=None, aimh_prob=0.1, df_proposal_dist=10, **kwargs
+        self, sigma=1.0e-5, gamma=None, aimh_prob=0.1, df_proposal_dist=10, delta=.999, **kwargs
     ):
 
         self.sigma = sigma
         self.g0 = gamma
+        self.decay = delta
         self.aimh_prob = aimh_prob
         self.dft = df_proposal_dist
 
-        # kwargs["nsplits"] = 1
         super(DIMEMove, self).__init__(**kwargs)
 
     def setup(self, coords):
@@ -70,6 +70,9 @@ class DIMEMove(RedBlueMove):
             self.prop_mean = np.zeros(npar)
             self.accepted = np.ones(nchain, dtype=bool)
             self.cumlweight = -np.inf
+        else:
+            # update AIMH proposal distribution
+            self.update_proposal_dist(coords)
 
     def propose(self, model, state):
         """Wrap original propose to get the some info on the current state
@@ -107,21 +110,16 @@ class DIMEMove(RedBlueMove):
             np.exp(self.cumlweight - newcumlweight) * self.prop_mean
             + np.exp(lweight - newcumlweight) * nmean
         )
+        # self.cumlweight = newcumlweight + np.log(self.decay)
         self.cumlweight = newcumlweight
 
     def get_proposal(self, x, xref, random):
         """Actual proposal function
         """
 
-        # print(x.shape)
-        # print(np.array(xref[0]).shape)
-        # xfull = np.hstack((x,xref))
         xref = xref[0]
         nchain, npar = x.shape
         nref, _ = xref.shape
-
-        # update AIMH proposal distribution
-        self.update_proposal_dist(x)
 
         # differential evolution: draw the indices of the complementary chains
         i0 = np.arange(nchain) + random.randint(1, nchain, size=nchain)

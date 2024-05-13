@@ -26,7 +26,6 @@ The sampler has a series of advantages over conventional samplers:
     
 There is a nice `set of slides <https://gregorboehl.com/revealjs/emc>`_ on my website which explains the DIME principle.
 
-
 .. figure:: https://github.com/gboehl/dime/blob/main/docs/dist.png?raw=true
   :width: 800
   :alt: Sample and target distribution

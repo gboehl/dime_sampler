@@ -1,15 +1,17 @@
 dime_sampler
 ============
 
-.. image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime__sampler-blue.svg?style=flat
+.. |badge0| image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime__sampler-blue.svg?style=flat
     :target: https://github.com/gboehl/dime_sampler
-.. image:: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml/badge.svg
+.. |badge1| image:: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml/badge.svg
     :target: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml
-.. image:: https://readthedocs.org/projects/dime-sampler/badge/?version=latest
+.. |badge2| image:: https://readthedocs.org/projects/dime-sampler/badge/?version=latest
     :target: https://dime-sampler.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-.. image:: https://badge.fury.io/py/dime-move.svg
-    :target: https://badge.fury.io/py/dime-move
+.. |badge3| image:: https://img.shields.io/pypi/v/dime_sampler
+   :alt: PyPI - Version
+
+|badge0| |badge1| |badge2| |badge3|
 
 **Differential-Independence Mixture Ensemble ("DIME") MCMC sampling for Python** 
 
@@ -18,7 +20,7 @@ This is the Python implementation of the DIME sampler proposed in `Ensemble MCMC
 The sampler has a series of advantages over conventional samplers:
 
 #. DIME MCMC is a (very fast) gradient-free **global multi-start optimizer** and, at the same time, a **MCMC sampler** that converges to the posterior distribution. This makes any posterior mode density maximization prior to MCMC sampling superfluous.
-#. The DIME sampler is pretty robust for odd shaped, **multimodal distributions**.
+#. The DIME sampler is pretty robust for odd **shaped, multimodal, black-box distributions**.
 #. DIME MCMC is **parallelizable**: many chains can run in parallel, and the necessary number of draws decreases almost one-to-one with the number of chains.
 #. DIME proposals are generated from an **endogenous and adaptive proposal distribution**, thereby providing close-to-optimal proposal distributions for black box target distributions without the need for manual fine-tuning.
     

@@ -4,12 +4,13 @@ dime_sampler
 .. |badge0| image:: https://img.shields.io/badge/GitHub-gboehl%2Fdime__sampler-blue.svg?style=flat
     :target: https://github.com/gboehl/dime_sampler
 .. |badge1| image:: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml/badge.svg
-    :target: https://github.com/gboehl/dime_sampler/actions/workflows/continuous-integration.yml
+    :target: https://github.com/gboehl/dime_sampler/actions/workflows
 .. |badge2| image:: https://readthedocs.org/projects/dime-sampler/badge/?version=latest
-    :target: https://dime-sampler.readthedocs.io/en/latest/?badge=latest
+    :target: https://dime-sampler.readthedocs.io
     :alt: Documentation Status
 .. |badge3| image:: https://img.shields.io/pypi/v/dime_sampler
-   :alt: PyPI - Version
+    :target: https://pypi.org/project/dime-sampler/ 
+    :alt: PyPI - Version
 
 |badge0| |badge1| |badge2| |badge3|
 

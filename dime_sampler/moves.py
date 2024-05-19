@@ -44,12 +44,12 @@ class DIMEMove(RedBlueMove):
     """
 
     def __init__(
-        self, sigma=1.0e-5, gamma=None, aimh_prob=0.1, df_proposal_dist=10, delta=.999, **kwargs
+        self, sigma=1.0e-5, gamma=None, aimh_prob=0.1, df_proposal_dist=10, rho=.999, **kwargs
     ):
 
         self.sigma = sigma
         self.g0 = gamma
-        self.decay = delta
+        self.decay = rho
         self.aimh_prob = aimh_prob
         self.dft = df_proposal_dist
 

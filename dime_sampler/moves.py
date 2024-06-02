@@ -41,6 +41,8 @@ class DIMEMove(RedBlueMove):
         probability to draw an adaptive independence Metropolis Hastings (AIMH) proposal. By default this is set to :math:`0.1`.
     df_proposal_dist : float, optional
         degrees of freedom of the multivariate t distribution used for AIMH proposals. Defaults to :math:`10`.
+    rho : float, optional
+        decay parameter for the aimh proposal mean and covariances. Defaults to :math:`0.999`.
     """
 
     def __init__(
@@ -110,8 +112,7 @@ class DIMEMove(RedBlueMove):
             np.exp(self.cumlweight - newcumlweight) * self.prop_mean
             + np.exp(lweight - newcumlweight) * nmean
         )
-        # self.cumlweight = newcumlweight + np.log(self.decay)
-        self.cumlweight = newcumlweight
+        self.cumlweight = newcumlweight + np.log(self.decay)
 
     def get_proposal(self, x, xref, random):
         """Actual proposal function

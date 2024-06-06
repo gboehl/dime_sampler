@@ -7,25 +7,6 @@ import numpy as np
 from scipy.stats import multivariate_t
 
 
-def mvt_sample(df, mean, cov, size, random):
-    """Sample from multivariate t distribution
-
-    For reasons beyond my understanding, the results from random.multivariate_normal with non-identity covariance matrix are not reproducibel across architecture for given random seeds. Since scipy.stats.multivariate_t is based on numpy's multivariate_normal, the workaround is to crochet this manually. Advantage is that the scipy dependency drops out.
-    """
-
-    dim = len(mean)
-
-    # draw samples
-    snorm = random.randn(size, dim)
-    chi2 = random.chisquare(df, size) / df
-
-    # calculate sqrt of covariance
-    svd_cov = np.linalg.svd(cov * (df - 2) / df)
-    sqrt_cov = svd_cov[0] * np.sqrt(svd_cov[1]) @ svd_cov[2]
-
-    return mean + snorm @ sqrt_cov / np.sqrt(chi2)[:, None]
-
-
 class DIMEMove(RedBlueMove):
     r"""A proposal using adaptive differential-independence mixture ensemble MCMC.
 
@@ -38,9 +19,9 @@ class DIMEMove(RedBlueMove):
     gamma : float, optional
         mean stretch factor for the proposal vector. By default, it is :math:`2.38 / \sqrt{2\,\mathrm{ndim}}` as recommended by `ter Braak (2006) <http://www.stat.columbia.edu/~gelman/stuff_for_blog/cajo.pdf>`_.
     aimh_prob : float, optional
-        probability to draw an adaptive independence Metropolis Hastings (AIMH) proposal. By default this is set to :math:`0.1`.
+        probability to draw an global transition kernel. By default this is set to :math:`0.1`.
     df_proposal_dist : float, optional
-        degrees of freedom of the multivariate t distribution used for AIMH proposals. Defaults to :math:`10`.
+        degrees of freedom of the multivariate t distribution used for global kernel. Defaults to :math:`10`.
     rho : float, optional
         decay parameter for the aimh proposal mean and covariances. Defaults to :math:`0.999`.
     """
@@ -70,10 +51,10 @@ class DIMEMove(RedBlueMove):
             # even more MAGIC
             self.prop_cov = np.eye(npar)
             self.prop_mean = np.zeros(npar)
-            self.accepted = np.ones(nchain, dtype=bool)
             self.cumlweight = -np.inf
+            self.update_proposal_dist(None)
         else:
-            # update AIMH proposal distribution
+            # update global kernel proposal distribution
             self.update_proposal_dist(coords)
 
     def propose(self, model, state):
@@ -89,30 +70,39 @@ class DIMEMove(RedBlueMove):
         """Update proposal distribution with ensemble `x`
         """
 
-        nchain, npar = x.shape
+        if x is not None:
+            # calculate global kernel parameters
+            nchain, npar = x.shape
 
-        # log weight of current ensemble
-        if self.accepted.any():
-            lweight = logsumexp(self.lprobs) + \
-                np.log(sum(self.accepted)) - np.log(nchain)
-        else:
-            lweight = -np.inf
+            # log weight of current ensemble
+            if self.accepted.any():
+                lweight = logsumexp(self.lprobs) + \
+                    np.log(sum(self.accepted)) - np.log(nchain)
+            else:
+                lweight = -np.inf
 
-        # calculate stats for current ensemble
-        ncov = np.cov(x.T, ddof=1)
-        nmean = np.mean(x, axis=0)
+            # calculate stats for current ensemble
+            ncov = np.cov(x.T, ddof=1)
+            nmean = np.mean(x, axis=0)
 
-        # update AIMH proposal distribution
-        newcumlweight = np.logaddexp(self.cumlweight, lweight)
-        self.prop_cov = (
-            np.exp(self.cumlweight - newcumlweight) * self.prop_cov
-            + np.exp(lweight - newcumlweight) * ncov
+            # update global kernel proposal distribution
+            newcumlweight = np.logaddexp(self.cumlweight, lweight)
+            self.prop_cov = (
+                np.exp(self.cumlweight - newcumlweight) * self.prop_cov
+                + np.exp(lweight - newcumlweight) * ncov
+            )
+            self.prop_mean = (
+                np.exp(self.cumlweight - newcumlweight) * self.prop_mean
+                + np.exp(lweight - newcumlweight) * nmean
+            )
+            self.cumlweight = newcumlweight + np.log(self.decay)
+
+        # create frozen distribution 
+        self.mvt = multivariate_t(
+            self.prop_mean,
+            self.prop_cov * (self.dft - 2) / self.dft,
+            df=self.dft
         )
-        self.prop_mean = (
-            np.exp(self.cumlweight - newcumlweight) * self.prop_mean
-            + np.exp(lweight - newcumlweight) * nmean
-        )
-        self.cumlweight = newcumlweight + np.log(self.decay)
 
     def get_proposal(self, x, xref, random):
         """Actual proposal function
@@ -131,23 +121,13 @@ class DIMEMove(RedBlueMove):
         q = x + self.g0 * (xref[i0 % nref] - xref[i1 % nref]) + f[:, None]
         factors = np.zeros(nchain, dtype=np.float64)
 
-        # draw chains for AIMH sampling
+        # draw chains for global transition kernel
         xchnge = random.rand(nchain) <= self.aimh_prob
 
         # draw alternative candidates and calculate their proposal density
-        xcand = mvt_sample(
-            df=self.dft,
-            mean=self.prop_mean,
-            cov=self.prop_cov,
-            size=sum(xchnge),
-            random=random,
-        )
-        lprop_old, lprop_new = multivariate_t.logpdf(
-            np.vstack((x[None, xchnge], xcand[None])),
-            self.prop_mean,
-            self.prop_cov * (self.dft - 2) / self.dft,
-            df=self.dft,
-        )
+        xcand = self.mvt.rvs(size=sum(xchnge), random_state=random)
+        lprop_old = self.mvt.logpdf(x[xchnge])
+        lprop_new = self.mvt.logpdf(xcand)
 
         # update proposals and factors
         q[xchnge, :] = np.reshape(xcand, (-1, npar))

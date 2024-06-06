@@ -125,7 +125,7 @@ class DIMEMove(RedBlueMove):
         xchnge = random.rand(nchain) <= self.aimh_prob
 
         # draw alternative candidates and calculate their proposal density
-        seed = random.randint(2 ** 31)
+        seed = np.random.randint(2 ** 31)
         xcand = self.mvt.rvs(size=sum(xchnge), random_state=seed)
 
         lprop_old = self.mvt.logpdf(x[xchnge])

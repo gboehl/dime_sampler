@@ -38,9 +38,9 @@ class DIMEMove(RedBlueMove):
     gamma : float, optional
         mean stretch factor for the proposal vector. By default, it is :math:`2.38 / \sqrt{2\,\mathrm{ndim}}` as recommended by `ter Braak (2006) <http://www.stat.columbia.edu/~gelman/stuff_for_blog/cajo.pdf>`_.
     aimh_prob : float, optional
-        probability to draw an adaptive independence Metropolis Hastings (AIMH) proposal. By default this is set to :math:`0.1`.
+        probability to draw a global transition kernel. By default this is set to :math:`0.1`.
     df_proposal_dist : float, optional
-        degrees of freedom of the multivariate t distribution used for AIMH proposals. Defaults to :math:`10`.
+        degrees of freedom of the multivariate t distribution used for global kernel proposals. Defaults to :math:`10`.
     rho : float, optional
         decay parameter for the aimh proposal mean and covariances. Defaults to :math:`0.999`.
     """
@@ -73,7 +73,7 @@ class DIMEMove(RedBlueMove):
             self.accepted = np.ones(nchain, dtype=bool)
             self.cumlweight = -np.inf
         else:
-            # update AIMH proposal distribution
+            # update global kernel proposal distribution
             self.update_proposal_dist(coords)
 
     def propose(self, model, state):
@@ -102,7 +102,7 @@ class DIMEMove(RedBlueMove):
         ncov = np.cov(x.T, ddof=1)
         nmean = np.mean(x, axis=0)
 
-        # update AIMH proposal distribution
+        # update global kernel proposal distribution
         newcumlweight = np.logaddexp(self.cumlweight, lweight)
         self.prop_cov = (
             np.exp(self.cumlweight - newcumlweight) * self.prop_cov
@@ -131,7 +131,7 @@ class DIMEMove(RedBlueMove):
         q = x + self.g0 * (xref[i0 % nref] - xref[i1 % nref]) + f[:, None]
         factors = np.zeros(nchain, dtype=np.float64)
 
-        # draw chains for AIMH sampling
+        # draw chains for global transition kernel
         xchnge = random.rand(nchain) <= self.aimh_prob
 
         # draw alternative candidates and calculate their proposal density

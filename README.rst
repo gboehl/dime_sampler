@@ -69,8 +69,7 @@ The package provides a direct drop-in replacement for `emcee <https://github.com
     ...
     # off you go sampling
 
-The rest of the usage is analog to emcee. See below for getting a quickstart or have a look `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_ for details. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_.
-
+The rest of the usage is analog to emcee. See below for getting a quickstart or have a look `this tutorial <https://emcee.readthedocs.io/en/stable/tutorials/quickstart/>`_ for details. The parameters specific to the ``DIMEMove`` are documented `here <https://dime-sampler.readthedocs.io/en/latest/modules.html#>`_. When using bounded priors it is recommended to use parameter transformations to maintain high acceptance rates.
 
 Tutorial
 --------

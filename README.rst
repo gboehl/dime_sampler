@@ -18,6 +18,8 @@ dime_sampler
 
 This is the Python implementation of the DIME sampler proposed in `DIME MCMC: A Swiss Army Knife for Bayesian Inference <https://gregorboehl.com/live/dime_mcmc_boehl.pdf>`_ *(Gregor Boehl, 2022, SSRN No. 4250395)*. It provides the ``DIMEMove`` as a drop-in replacement for the great `emcee <https://github.com/dfm/emcee>`_ MCMC package.
 
+There exist complementary stand-alone implementations in `Julia language <https://github.com/gboehl/DIMESampler.jl>`_ and `in matlab <https://github.com/gboehl/dime-mcmc-matlab>`_. DIME is also part of `Dynare 7.0 <https://www.dynare.org/manual/the-model-file.html#posterior-sampling-options>`_ (sampler option ``dime_mcmc``). 
+
 The sampler has a series of advantages over conventional samplers:
 
 #. DIME MCMC is a (very fast) gradient-free **global multi-start optimizer** and, at the same time, a **MCMC sampler** that converges to the posterior distribution. This makes any posterior mode density maximization prior to MCMC sampling superfluous.
@@ -33,10 +35,9 @@ There is a nice `set of slides <https://gregorboehl.com/revealjs/emc>`_ on my we
   
   Figure: A trimodal example distribution in 35 dimensions
 
-There exist complementary stand-alone implementations in `Julia language <https://github.com/gboehl/DIMESampler.jl>`_ and `in matlab <https://github.com/gboehl/dime-mcmc-matlab>`_.
 
-Installation
-------------
+Installation and Kudos
+----------------------
 
 Installing the `repository version <https://pypi.org/project/dime_sampler/>`_ from PyPi is as simple as typing
 
@@ -44,8 +45,16 @@ Installing the `repository version <https://pypi.org/project/dime_sampler/>`_ fr
 
    pip install dime_sampler
 
-in your terminal or Anaconda Prompt. 
+in your terminal or Anaconda Prompt. If you are using this software in your research, please cite
 
+.. code-block:: bibtex
+
+    @techreport{boehl2022mcmc,
+    author={Gregor Boehl},
+    title={DIME MCMC: A Swiss Army Knife for Bayesian Inference},
+    journal={Available at SSRN 4250395},
+    year={2022}
+    }
 
 Usage
 -----
@@ -169,17 +178,3 @@ While DIME is an MCMC sampler, it can straightforwardly be used as a global opti
 .. image:: https://github.com/gboehl/dime_sampler/blob/main/docs/lprobs.png?raw=true
   :width: 800
   :alt: Log-likelihoods
-
-References
-----------
-
-If you are using this software in your research, please cite
-
-.. code-block:: bibtex
-
-    @techreport{boehl2022mcmc,
-    author={Gregor Boehl},
-    title={Ensemble MCMC Sampling for Robust Bayesian Inference},
-    journal={Available at SSRN 4250395},
-    year={2022}
-    }
